@@ -6,6 +6,9 @@
  */
 import java.util.Scanner;
 
+/**
+ * This version has the optional input validation improvements described at the end of Activity 4.1.2
+ */
 public class ConcentrationRunner
 {
     // create the game 
@@ -30,38 +33,57 @@ public class ConcentrationRunner
 
             displayBoard();
 
-            // player selects first tile, if not an integer, quit game
+            // get player's first selection, if not an integer, quit
             int i1 = -1;
             int j1 = -1;
-            System.out.print("First choice (i j): ");
-            if (in.hasNextInt()) i1 = in.nextInt(); 
-            else quitGame();
-            if (in.hasNextInt()) j1 = in.nextInt();
-            else quitGame();
-            in.reset(); // ignore any extra input
-       
-            // display board with first tile face up
+            boolean validTileLoc = false;
+            while(!validTileLoc) {
+
+                System.out.print("First choice (i j): ");
+                if (in.hasNextInt()) i1 = in.nextInt();
+                else quitGame();
+                if (in.hasNextInt()) j1 = in.nextInt();
+                else quitGame();
+                in.reset(); // ignore any extra input
+
+                validTileLoc = game.validSelection(i1, j1);
+                if (!validTileLoc) System.out.println("Invalid input, please try again");
+
+            }
+
+            // display first tile
             game.showFaceUp(i1, j1);
             displayBoard();
-            
-            // player selects second tile, if not an integer, quit game
+
+            // get player's second selection, if not an integer, quit
             int i2 = -1;
             int j2 = -1;
-            System.out.print("Second choice (i j): ");
-            if (in.hasNextInt()) i2 = in.nextInt();
-            else quitGame();
-            if (in.hasNextInt()) j2 = in.nextInt();
-            else quitGame();
-            in.reset(); // ignore any extra input
-            
-            // display board with additional second tile face up
+            validTileLoc = false;
+            while(!validTileLoc) {
+
+                System.out.print("Second choice (i j): ");
+                if (in.hasNextInt()) i2 = in.nextInt();
+                else quitGame();
+                if (in.hasNextInt()) j2 = in.nextInt();
+                else quitGame();
+                in.reset(); // ignore any extra input
+
+                validTileLoc = game.validSelection(i2, j2);
+                if (!validTileLoc) System.out.println("Invalid input, please try again");
+                else if ((i1 == i2) && (j1 == j2)){
+                    System.out.println("You mush choose a different second tile");
+                    validTileLoc = false;
+                }
+
+            }
+            // display second tile on board
             game.showFaceUp(i2, j2);
             displayBoard(); 
-           
+
             // determine if a match was found
             String matched = game.checkForMatch(i1, j1, i2, j2);
             System.out.println(matched);
-          
+
             // wait 2 seconds to start the next turn
             wait(2); 
         }
@@ -91,7 +113,7 @@ public class ConcentrationRunner
             System.out.println(e);
         }
     }
-    
+
     /** 
      * User quits game
      */

@@ -13,13 +13,16 @@ import java.util.ArrayList;
  * with another card and has been removed from the board. We use this value 
  * instead of a blank value or a missing tile because it helps to represent
  * the m x n game board when tiles would otherwise be blank or missing.
- * 
+ */
+
+/**
+ * Solution Version
  */
 public class Tile
-{
+{   
     private boolean faceUp;
     private boolean matched;
-    private String cardFace; 
+    private String cardFace;
     private String cardBack = "_____";
     private String cardMatched = "  *  ";
     
@@ -33,29 +36,31 @@ public class Tile
     {
         cardFace = word;
     }
+
     
     /**
-     * Return the value of the tile in its face up state
+     * Return the String value of the tile in its face up state
      *  
-     * @return faceUp 
+     * @return the face up String value of the card 
      */
     public String getFace() {
         return cardFace;
     }
-    
+      
     /**
-     * Return the value of the tile in its face down state
+     * Return the  value of the tile in its face down state
      * 
      * @return the face (as a String value)
      */
     public String getBack() {
         return cardBack;
     }
+
     
     /**
      * Set the card to either a face up or face down state
      * 
-     * @param b set to true to show the card face up, set to false to show face down
+     * @param b true to show the card face up, false to show face down
      */
     public void faceUp(boolean b)
     {
@@ -65,7 +70,7 @@ public class Tile
     /**
      * Determine if the card is currently face up
      * 
-     * @return true if the card is currently in the faceUp state, false otherwise
+     * @reutrn true if the card is currently in the faceUp state, false otherwise
      */
     public boolean isFaceUp() {
         return faceUp;
@@ -88,6 +93,31 @@ public class Tile
      */
     public boolean matched() {
         return matched;
+    }
+    
+
+    /**
+     * Deteremines if two cards are the same according the Sevens rules: the card faces add to 7.
+     * 
+     * @param tile the tile to compare this tile to
+     * @param rules the rules to play by, "concentration" or "sevens"
+     */
+    public boolean addsTo7(Tile tile) {
+        int a = Integer.parseInt(this.cardFace);
+        int b = Integer.parseInt(tile.cardFace);
+        if ( a + b == 7) return true;
+        else return false;
+    }
+    
+    /**
+     * Determines if two cards are considered the same
+     * 
+     * @param the tile to check for a match to this tile
+     * @return true if the match, false otherwise
+     */
+    public boolean equals(Tile tile) {      
+        if (this.cardFace.equals(tile.cardFace) )return true;
+        else return false;
     }
 
 }
